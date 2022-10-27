@@ -1,0 +1,69 @@
+.pages-for-patients {
+  height:auto;
+  width: 80%;
+  margin: 0 auto;
+  max-width: 800px;
+}
+.patient-form-container p {
+  text-align: left;
+}
+.patient-form-container {
+  display: flex;
+  flex-direction: column;
+}
+
+#patient-name{
+  border: 0;
+  border-radius: 5px;
+  background-color: white;
+  color: black;
+  letter-spacing: 1px;
+  font-size: 26px;
+  width: 150px;
+  margin: 10px;
+  padding: 10px 20px;
+}
+
+#patient-name-edit{
+  border: 0;
+  border-radius: 5px;
+  background-color: white;
+  color: black;
+  letter-spacing: 1px;
+  font-size: 15px;
+  width: 75px;
+  margin: 10px;
+  padding: 10px 20px;
+}
+
+.radio-button-field {
+  border: 0;
+  border-radius: 12px;
+  color: white;
+  letter-spacing: 1px;
+  font-size: 20px;
+  margin-bottom: 10px;
+  padding: 10px 10px;
+  text-align: center;
+}
+
+input::placeholder {
+  color: gray;
+  letter-spacing: 2px;
+}
+
+input:focus {
+  outline: none;
+}
+
+.radio-label {
+  margin: 10px;
+}
+
+#color-red {
+  color: rgb(139, 33, 33);
+}
+
+th {
+  border-bottom: 1px solid rgb(255, 255, 255);
+}
