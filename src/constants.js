@@ -1,7 +1,7 @@
 // constants.js
 import { ethers } from "ethers";
 import contract from "./contracts/DistributedMedicalDatabase.json";
-const CONTRACT_ADDRESS = "0x9F22FC5BA66EfF7cd822702B8803E6CCF91B22aE";
+const CONTRACT_ADDRESS = "0xC29A5c85d9c14B3512F54cFcC869219e01301adF";
 const ABI = contract.abi;
 const ETHERS =  ethers ;
 

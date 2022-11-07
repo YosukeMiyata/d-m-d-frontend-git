@@ -3,8 +3,6 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import "./App_responsive.css";
 
-import { CONTRACT_ADDRESS, ABI, ETHERS } from "./constants";
-
 import headerLogoImage from "./logo_l.png";
 import footerLogoImage from "./logo_footer_m.png";
 
@@ -107,29 +105,12 @@ function App() {
       console.log('We have the ethereum object', ethereum);
     }
 
-    const provider = new ETHERS.providers.Web3Provider(ethereum);
-    const signer = provider.getSigner();
-    const dmdContract = new ETHERS.Contract(CONTRACT_ADDRESS, ABI, signer);
-
     const accounts = await ethereum.request({ method: 'eth_accounts' });
 
     if (accounts.length !== 0) {
       const account = accounts[0];
       console.log('Found an authorized account:', account);
-      
-      console.log("check if wallet is registerd");
-      //医療従事者様の基本情報が登録済みかどうかで医療従事者様かどうか確認
-      let bool = await dmdContract.check_if_healthcare_worker_registered();
-      //登録済みの医療従事者様なら
-      if( bool ){
-        
-        console.log("登録済み");
-        setCurrentRole( bool );
-        setCurrentAccount(account);
-        
-      }
-      
-      //setCurrentAccount(account);
+      setCurrentAccount(account);
 
     } else {
       console.log('No authorized account found');

@@ -1,69 +1,68 @@
-.pages-for-patients {
-  height:auto;
-  width: 80%;
-  margin: 0 auto;
-  max-width: 800px;
+table {
+  border-collapse: collapse;
 }
-.patient-form-container p {
-  text-align: left;
-}
-.patient-form-container {
-  display: flex;
-  flex-direction: column;
-}
-
-#patient-name{
-  border: 0;
-  border-radius: 5px;
-  background-color: white;
-  color: black;
-  letter-spacing: 1px;
-  font-size: 26px;
-  width: 150px;
-  margin: 10px;
-  padding: 10px 20px;
-}
-
-#patient-name-edit{
-  border: 0;
-  border-radius: 5px;
-  background-color: white;
-  color: black;
-  letter-spacing: 1px;
-  font-size: 15px;
-  width: 75px;
-  margin: 10px;
-  padding: 10px 20px;
-}
-
-.radio-button-field {
-  border: 0;
-  border-radius: 12px;
-  color: white;
-  letter-spacing: 1px;
-  font-size: 20px;
-  margin-bottom: 10px;
-  padding: 10px 10px;
-  text-align: center;
-}
-
-input::placeholder {
-  color: gray;
-  letter-spacing: 2px;
-}
-
-input:focus {
+ 
+input[type="submit"],
+select,
+button {
+  -webkit-box-shadow: none;
+  box-shadow: none;
   outline: none;
+  border: none;
 }
 
-.radio-label {
-  margin: 10px;
+input::placeholder,
+textarea::placeholder {
+  color: #ccc;
+}
+ 
+::-webkit-input-placeholder {
+  color: #ccc;
+  opacity: 1;
+}
+ 
+::-moz-placeholder {
+  color: #ccc;
+  opacity: 1;
+}
+ 
+:-ms-input-placeholder {
+  color: #ccc;
+  opacity: 1;
+}
+ 
+.form-table {
+  width: 100%;
+}
+ 
+.form-table th,
+.form-table td,
+.form-table-not-marge {
+  border-top: 1px solid #d7d7d7;
+  border-bottom: 1px solid #d7d7d7;
+  border-right: 1px solid #d7d7d7;
+  border-left: 1px solid #d7d7d7;
+  padding: 20px;
+}
+ 
+.form-table th {
+  background: #ffecea;
+  padding-left: 50px;
+  position: relative;
+  text-align: left;
+  width: 200px;
+  font-size: 20px;
 }
 
-#color-red {
-  color: rgb(139, 33, 33);
+.form-table-marge-left{
+  border-top: 1px solid #d7d7d7;
+  border-bottom: 1px solid #d7d7d7;
+  border-left: 1px solid #d7d7d7;
+  padding: 20px;
 }
-
-th {
-  border-bottom: 1px solid rgb(255, 255, 255);
+.form-table-marge-right{
+  border-top: 1px solid #d7d7d7;
+  border-bottom: 1px solid #d7d7d7;
+  border-right: 1px solid #d7d7d7;
+  padding: 20px;
 }
