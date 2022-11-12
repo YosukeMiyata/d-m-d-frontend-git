@@ -2,15 +2,19 @@
 import React, { useEffect, useState } from "react";
 import "./HealthcareWorkersPages.css";
 
+import { Web3Storage } from 'web3.storage';
+import { NFTStorage } from 'nft.storage';
+
 import ethLogo from '../../assets/ethlogo.png';
 import polygonLogo from '../../assets/polygonlogo.png';
+import ImageLogo from "../../assets/image.svg";
 
 import { CONTRACT_ADDRESS, ABI, ETHERS } from "./../../constants";
 import { useForm } from 'react-hook-form';
 import ApprovalPages from "../../Components/ApprovalPages";
 
-import { ColorRing } from 'react-loader-spinner'
-;<ColorRing
+import { ColorRing } from 'react-loader-spinner';
+<ColorRing
 visible={true}
 height="80"
 width="80"
@@ -23,6 +27,10 @@ colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
 const HealthcareWorkersPages = ({currentAccount, network}) => {
 
   const { register, handleSubmit, formState: { errors } } = useForm();
+
+  //const API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDAyMkZhMDVlN0IwMWRhMzk1Zjc1ZWIyMGVhYjY4QTFhOWIwQzNlMTciLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2NTgzMTY5OTkzMTYsIm5hbWUiOiJKdWlsbGlhcmQifQ.ec8NTQvUuf6tvH0jqNfEhU-tFCVVDx6ZDlnNfUjtbl4";
+  const API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDAyMkZhMDVlN0IwMWRhMzk1Zjc1ZWIyMGVhYjY4QTFhOWIwQzNlMTciLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2NjgwNzE5NTg3MDMsIm5hbWUiOiJqdWlsbGkifQ.kgxb4wnDOgshx2Fx7OwFEaRh1eFh1oWYNJ5RNvXwMww";
+  const NFT_STORAGE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweGNFRkRCYWI4NGE4RjhhOWEyQjM0RTBkNmQ5RTFhMjdCMUUwNzYwMjEiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY2ODA4MzgxNDI0NiwibmFtZSI6Ikp1aWxsaWFyZCJ9.u2WR7t81CGk9JvB13aEy4m4IJaeP_0zCkk-lKSqFPgk';
 
   //登録フラグを保存する変数とメソッド
   const [isRegisteredValue, setIsRegisteredValue] = useState("");
@@ -59,6 +67,15 @@ const HealthcareWorkersPages = ({currentAccount, network}) => {
 
   //ローディングフラグを保存する変数とメソッド
   const [isLoadingValue, setIsLoadingValue] = useState("");
+
+  //顔写真登録フラグを保存する変数とメソッド
+  const [isUpLoaderValue, setIsUpLoaderValue] = useState("");
+  
+  //顔写真登録フラグを保存する変数とメソッド
+  const [value, setValue] = useState("");
+
+  //顔写真の表示非表示フラグを保存する変数とメソッド
+  const [isVisiblePictureValue, setIsVisiblePictureValue] = useState("");
 
   //登録済みの基本情報をコントラクトから取得する
   const getRegisterdBasicInformation = async ( flag ) => {
@@ -157,9 +174,9 @@ const HealthcareWorkersPages = ({currentAccount, network}) => {
 
     //コントラクトからの通知を受け取る
     const onNewBasicInformationAboutHealthcareWorker = (
-      id, healthcareworker, familyname, firstname, furiganafamilyname, furiganafirstname, workplace, occupation, lasttimestamp) => {
+      id, healthcareworker, familyname, firstname, furiganafamilyname, furiganafirstname, workplace, occupation, picture, lasttimestamp) => {
       
-      console.log("NewData", id, healthcareworker, familyname, firstname, furiganafamilyname, furiganafirstname, workplace, occupation, lasttimestamp);
+      console.log("NewData", id, healthcareworker, familyname, firstname, furiganafamilyname, furiganafirstname, workplace, occupation, picture, lasttimestamp);
       
       //自分の基本情報を取得する。tureは基本情報が登録済みであることを示す
       getRegisterdBasicInformation( true );
@@ -318,7 +335,7 @@ const HealthcareWorkersPages = ({currentAccount, network}) => {
   const renderNotRegisteredContainer = () => (
     <div className="form-container">
       <h1>医療従事者様用　登録フォーム</h1>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(toUpLoader)}>
       <table className="form-table">
           <tbody>
             <tr>
@@ -586,12 +603,137 @@ const HealthcareWorkersPages = ({currentAccount, network}) => {
             </tr>
           </tbody>
         </table>
-        <div className="textcenter">
+        {/*<div className="textcenter">
+          <button className="cta-button connect-wallet-button" onClick={toUpLoader}>顔写真登録へ</button>
+        </div>*/}
+        {/*<div className="textcenter">
           { isLoadingValue ? <ColorRing/> : <button type="submit" className="cta-button connect-wallet-button" >登録</button> }
+        </div>*/}
+        <div className="textcenter">
+          <button type="submit" className="cta-button connect-wallet-button" >顔写真登録へ</button>
         </div>
       </form>
     </div>
   );
+
+  //toUpLoaderボタンが押されたときに呼ばれる関数
+  const toUpLoader = async () => {
+      
+    if( !isUpLoaderValue ){
+      
+      console.log("Clicked toUpLoader!");
+      setIsUpLoaderValue( true );
+    
+    }
+    else{
+
+      console.log("Clicked toUpLoader!");
+      setIsUpLoaderValue( false );
+
+    }
+
+  };
+
+  const onChangeInputFile = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0]
+      const reader = new FileReader()
+      reader.onload = (e) => {
+        //console.log(e.target.result)
+        setValue(e.target.result)
+      }
+      reader.readAsDataURL(file)
+      setIsVisiblePictureValue(true) 
+    }
+  }
+
+  const onChangeInputFile2 = (e) => {
+    e.target.value = ""
+    setValue()
+    setIsVisiblePictureValue(false) 
+  }
+
+  const imageToNFT = async (e) => {
+    const client = new Web3Storage({ token: API_KEY })
+    const image = e.target
+    console.log(image.files)
+
+    console.log("1")
+
+    const rootCid = await client.put(image.files, {
+        name: 'experiment',
+        maxRetries: 3
+    })
+    console.log("2")
+    console.log(rootCid)
+    const res = await client.get(rootCid) // Web3Response
+    console.log("2.5")
+    console.log(res)
+    const files = await res.files() // Web3File[]
+    console.log("3")
+    for (const file of files) {
+      console.log("file.cid:",file.cid)
+      //askContractToMintNft(file.cid)
+    }
+    console.log("4")
+  }
+
+  // 基本情報が未登録の場合の登録フォームをレンダリングする関数
+  const renderNotRegisteredUpLoaderContainer = () => (
+    <div>
+      <div>
+      <button className="cta-button connect-wallet-button" onClick={toUpLoader}>前のページに戻る</button>
+      </div>
+      <form onSubmit={handleSubmit(onSubmit)}>
+      <div className="outerBox">  
+        <div className="title">
+          <h2>顔写真をご登録ください</h2>
+          <p>縦横が同じ長さの正方形の画像を１枚</p>
+          <p>肩から上の正面を向いた顔写真</p>
+          <p>３ヶ月以内に撮影されたもの</p>
+        </div>
+        
+        <div className="nftUplodeBox">
+        <button>
+          ファイルを選択
+          <input className="nftUploadInput" type="file" accept=".jpg , .jpeg , .png" {...register("image", { required: true })} onChange={onChangeInputFile} onClick={onChangeInputFile2}/>
+        </button>
+        <div>
+          { isVisiblePictureValue && <img width="250" height="250" src={value} />}
+        </div>
+        </div>
+      </div>
+      {errors.image && <div id="color-red">顔写真は必須の項目です</div>}
+      <div className="textcenter">
+        <button type="submit" className="cta-button connect-wallet-button" >登録</button>
+      </div>
+      </form>
+      <div className="textcenter">
+      { isVisiblePictureValue && <button className="cta-button connect-wallet-button" onClick={onChangeInputFile2} >写真をリセット</button>}
+      </div>
+    </div>
+  );
+
+  const renderNotRegisteredUpLoaderContainer2 = () => (
+
+    <div className="outerBox">
+      <div className="title">
+        <h2>NFTアップローダー</h2>
+      </div>
+      <div className="nftUplodeBox">
+        <div className="imageLogoAndText">
+          <img src={ImageLogo} alt="imagelogo" />
+          <p>ここにドラッグ＆ドロップしてね</p>
+        </div>
+        <input className="nftUploadInput" multiple name="imageURL" type="file" accept=".jpg , .jpeg , .png" onChange={imageToNFT}  />
+      </div>
+      <p>または</p>
+      <button variant="contained">
+        ファイルを選択
+        <input className="nftUploadInput" type="file" accept=".jpg , .jpeg , .png" onChange={imageToNFT} />
+      </button>
+    </div>
+  )
 
   const renderEditBloodType = () => {
     return (
@@ -832,8 +974,8 @@ const HealthcareWorkersPages = ({currentAccount, network}) => {
       );
     }else{
       return(
-        <form onSubmit={handleSubmit(onReSubmit)}>
-          <button type="submit" className="cta-button connect-wallet-button" >再登録</button>
+        <form onSubmit={handleSubmit(toUpLoader)}>
+          <button type="submit" className="cta-button connect-wallet-button" >顔写真の再登録へ</button>
         </form>
       );
     }
@@ -856,6 +998,13 @@ const HealthcareWorkersPages = ({currentAccount, network}) => {
   
 };
 
+  const storeNFT = async (image) => {
+    // create a new NFTStorage client using our API key
+    const nftstorage = new NFTStorage({ token: NFT_STORAGE_KEY })
+
+    // call client.store, passing in the image & metadata
+    return nftstorage.storeBlob(image);
+  };
   
   //登録ボタンが押されたときに呼ばれる関数
   const onSubmit = async (data) => {
@@ -868,6 +1017,22 @@ const HealthcareWorkersPages = ({currentAccount, network}) => {
     console.log( data.furiganafirstname );
     console.log( data.workplace );
     console.log( data.occupation );
+    console.log( data.image );
+
+    console.log("Your picture is uploading!");
+    
+    const images = data.image;
+
+    let img = "";
+
+    for (const image of images) {
+      const cid = await storeNFT(image);
+      console.log("Your picture uploaded!");
+      console.log(cid);
+      img = "https://" + cid + ".ipfs.nftstorage.link/";
+    }
+
+    console.log(img);
 
     try {
       const { ethereum } = window;
@@ -889,17 +1054,18 @@ const HealthcareWorkersPages = ({currentAccount, network}) => {
       console.log("register medical data");
       
       //基本情報を登録する
-      let registerTxn = await dmdContract.register_basic_information_for_healthcareworker(
+      let submitTxn = await dmdContract.register_basic_information_for_healthcareworker(
         data.familyname,
         data.firstname,
         data.furiganafamilyname,
         data.furiganafirstname,
         data.workplace,
-        data.occupation
+        data.occupation,
+        img
       );
-      console.log("Registering...", registerTxn);
-      await registerTxn.wait();
-      console.log("Registered -- ", registerTxn);
+      console.log("Registering...", submitTxn);
+      await submitTxn.wait();
+      console.log("Registered -- ", submitTxn);
 
       setIsLoadingValue( false );
       
@@ -907,6 +1073,7 @@ const HealthcareWorkersPages = ({currentAccount, network}) => {
       setIsLoadingValue( false );
       console.log(error);
     }
+
   };
 
   //編集ボタンが押されたときに呼ばれる関数
@@ -932,20 +1099,20 @@ const HealthcareWorkersPages = ({currentAccount, network}) => {
     
     if( !mypagemodeValue ){
       
-      console.log("Clicked onEdit!");
+      console.log("Clicked onMyPage!");
       setMyPageModeValue( true );
     
     }
     else{
 
-      console.log("Clicked onEdit!");
+      console.log("Clicked onMyPage!");
       setMyPageModeValue( false );
 
     }
 
   };
 
-  //登録ボタンが押されたときに呼ばれる関数
+  //再登録ボタンが押されたときに呼ばれる関数
   const onReSubmit = async (data) => {
 
     setIsLoadingValue( true );
@@ -956,6 +1123,22 @@ const HealthcareWorkersPages = ({currentAccount, network}) => {
     console.log( data.furiganafirstname );
     console.log( data.workplace );
     console.log( data.occupation );
+    console.log( data.image );
+
+    console.log("Your picture is uploading!");
+    
+    const images = data.image;
+
+    let img = "";
+
+    for (const image of images) {
+      const cid = await storeNFT(image);
+      console.log("Your picture uploaded!");
+      console.log(cid);
+      img = "https://" + cid + ".ipfs.nftstorage.link/";
+    }
+
+    console.log(img);
 
     try {
       const { ethereum } = window;
@@ -983,7 +1166,8 @@ const HealthcareWorkersPages = ({currentAccount, network}) => {
         data.furiganafamilyname,
         data.furiganafirstname,
         data.workplace,
-        data.occupation
+        data.occupation,
+        img
       );
       console.log("Editing...", editTxn);
       await editTxn.wait();
@@ -997,11 +1181,16 @@ const HealthcareWorkersPages = ({currentAccount, network}) => {
         setEditModeValue( false );
   
       }
+
+      alert("あなたの基本情報は正常に更新されました");
       
     } catch (error) {
       setIsLoadingValue( false );
       console.log(error);
     }
+
+    setMyPageModeValue(false);
+    setIsUpLoaderValue(false);
 
   }
 
@@ -1094,6 +1283,12 @@ const HealthcareWorkersPages = ({currentAccount, network}) => {
               </td>
             </tr>
             <tr>
+              <th>顔写真</th>
+              <td  colSpan="2" className="form-table-not-marge">
+                <img width="250" height="250" src={basicinformationValue.picture} />
+              </td>
+            </tr>
+            <tr>
               <th>最終更新日</th>
               <td  colSpan="2" className="form-table-not-marge">
                 {lasttimeValue}
@@ -1105,6 +1300,42 @@ const HealthcareWorkersPages = ({currentAccount, network}) => {
           { editmodeValue && renderSubmitButton() }
         </div>
   </div>
+  );
+
+  //既に基本情報が登録されている場合の表示をレンダリングする関数
+  const renderRegisteredUpLoaderContainer = () => (
+    <div>
+      <div>
+      <button className="cta-button connect-wallet-button" onClick={toUpLoader}>前のページに戻る</button>
+      </div>
+      <form onSubmit={handleSubmit(onReSubmit)}>
+      <div className="outerBox">  
+        <div className="title">
+          <h2>顔写真をご登録ください</h2>
+          <p>縦横が同じ長さの正方形の画像を１枚</p>
+          <p>肩から上の正面を向いた顔写真</p>
+          <p>３ヶ月以内に撮影されたもの</p>
+        </div>
+        
+        <div className="nftUplodeBox">
+        <button>
+          ファイルを選択
+          <input className="nftUploadInput" type="file" accept=".jpg , .jpeg , .png" {...register("image", { required: true })} onChange={onChangeInputFile} onClick={onChangeInputFile2}/>
+        </button>
+        <div>
+          { isVisiblePictureValue && <img width="250" height="250" src={value} />}
+        </div>
+        </div>
+      </div>
+      {errors.image && <div id="color-red">顔写真は必須の項目です</div>}
+      <div className="textcenter">
+        <button type="submit" className="cta-button connect-wallet-button" >再登録</button>
+      </div>
+      </form>
+      <div className="textcenter">
+      { isVisiblePictureValue && <button className="cta-button connect-wallet-button" onClick={onChangeInputFile2} >写真をリセット</button>}
+      </div>
+    </div>
   );
 
   //次のページへの誘導をレンダリングする関数
@@ -1129,9 +1360,11 @@ const HealthcareWorkersPages = ({currentAccount, network}) => {
       <p>分散型医療データベース</p>
 
       {!isRegisteredValue && !verifiedValue && renderNotRegisteredVerifyPasswordContainer()}
-      {!isRegisteredValue && verifiedValue && renderNotRegisteredContainer()}
+      {!isRegisteredValue && verifiedValue && !isUpLoaderValue && renderNotRegisteredContainer()}
+      {!isRegisteredValue && verifiedValue && isUpLoaderValue && renderNotRegisteredUpLoaderContainer()}
       {isRegisteredValue && !mypagemodeValue && !isNextPageValue && renderRegisteredContainer()}
-      {isRegisteredValue && mypagemodeValue && renderRegisteredContainer2()}
+      {isRegisteredValue && mypagemodeValue && !isUpLoaderValue && renderRegisteredContainer2()}
+      {isRegisteredValue && mypagemodeValue && isUpLoaderValue && renderRegisteredUpLoaderContainer()}
 
       {isRegisteredValue && !mypagemodeValue && isNextPageValue && renderNextPageContainer()}
     

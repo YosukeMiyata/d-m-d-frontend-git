@@ -219,6 +219,7 @@ const PatientsPages = () => {
                     furiganafirstname: sahw.furiganafirstname , // 医療従事者様の名前(フリガナ)
                     workplace: sahw.workplace , // 医療従事者様の勤務先
                     occupation: sahw.occupation, // 医療従事者様の職種（医師、看護師、理学療法士、薬剤師、レントゲン技師など）
+                    picture: sahw.picture, // 医療従事者様の顔写真のURL
                     authoritytoaccess: authority_to_access, //閲覧権限の有無
                     isapplyingforaccess: is_applying_for_access, //閲覧申請の有無
                     authoritytoedit: authority_to_edit, //編集権限の有無
@@ -238,6 +239,7 @@ const PatientsPages = () => {
                     furiganafirstname: sahw.furiganafirstname , // 医療従事者様の名前(フリガナ)
                     workplace: sahw.workplace , // 医療従事者様の勤務先
                     occupation: sahw.occupation, // 医療従事者様の職種（医師、看護師、理学療法士、薬剤師、レントゲン技師など）
+                    picture: sahw.picture, // 医療従事者様の顔写真のURL
                     authoritytoaccess: authority_to_access, //閲覧権限の有無
                     isapplyingforaccess: is_applying_for_access, //閲覧申請の有無
                   },
@@ -287,6 +289,7 @@ const PatientsPages = () => {
                     furiganafirstname: sahw.furiganafirstname , // 医療従事者様の名前(フリガナ)
                     workplace: sahw.workplace , // 医療従事者様の勤務先
                     occupation: sahw.occupation, // 医療従事者様の職種（医師、看護師、理学療法士、薬剤師、レントゲン技師など）
+                    picture: sahw.picture, // 医療従事者様の顔写真のURL
                     authoritytoaccess: authority_to_access, //閲覧権限の有無
                     isapplyingforaccess: is_applying_for_access, //閲覧申請の有無
                     authoritytoedit: authority_to_edit, //編集権限の有無
@@ -307,6 +310,7 @@ const PatientsPages = () => {
                     furiganafirstname: sahw.furiganafirstname , // 医療従事者様の名前(フリガナ)
                     workplace: sahw.workplace , // 医療従事者様の勤務先
                     occupation: sahw.occupation, // 医療従事者様の職種（医師、看護師、理学療法士、薬剤師、レントゲン技師など）
+                    picture: sahw.picture, // 医療従事者様の顔写真のURL
                     authoritytoedit: authority_to_edit, //編集権限の有無
                     isapplyingforedit: is_applying_for_edit, //編集申請の有無
                   },
@@ -999,10 +1003,9 @@ const PatientsPages = () => {
                   className="display-between applicant-area"
                 >
                   <div style={{
-                    hight: "45px", width:"45px",
+                    height: "50px", width:"50px",
                   }}>
-                    <img hight="45px" width="45px" src="https://bafybeic4f5glfmmyqzxbrfoodr7lfxwzj355exgqpkkc3w5dxye6gicwjm.ipfs.w3s.link/art-hauntington-jzY0KRJopEI-unsplash.jpg"/>
-                    {/*<img hight="45px" width="45px" src="https://bafybeifl4s25twa5ecjfr7osyn5zoruxfxi2cvmfvvw53k2ap7z7xneali.ipfs.w3s.link/joseph-gonzalez-iFgRcqHznqg-unsplash.jpg"/>*/}
+                    <img hight="50px" width="50px" src={applicant.picture} />
                   </div>
                   <div>{applicant.familyname}{applicant.firstname}</div>
                   <div>{applicant.workplace}</div>

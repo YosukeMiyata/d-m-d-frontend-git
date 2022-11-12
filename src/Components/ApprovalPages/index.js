@@ -307,13 +307,18 @@ const ApprovalPages = ({currentAccount, network, searchAddress, isRegistered}) =
       患者様のデータを閲覧する
     </button>
   );
+
+  // 前のページに戻る関数
+  const refresh = async () => {
+    window.location.reload();
+  }
   
   //既に基本情報が登録されている場合の表示をレンダリングする関数
   const renderApprovalContainer = () => (
     <div>
-      {/*<button onClick={() => goBack()} className="cta-button3 connect-wallet-button" >
+      <button onClick={() => refresh()} className="cta-button3 connect-wallet-button" >
         前のページに戻る
-      </button>*/}
+      </button>
       <div className="textcenter textsize20px">
         検索した患者様のアドレス:
       </div>
